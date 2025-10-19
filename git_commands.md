@@ -1,47 +1,74 @@
-npm run dev
+# 0) 看看目前位置（應該停在 ecommerce-cart 專案資料夾內）
+pwd
+git --version
 
-# 🛠️ Git 指令備忘錄（Flutter 專案同步 GitHub）
-
+# 1) 初始化（如已存在 .git 會跳過。若之前初始化過，可略過 init）
 git init
+
+# 2) 設定 Git 使用者（若你全機已有就可略過）
+git config user.name "fromeastale"
+git config user.email "你的GitHub註冊Email"
+
+# 3) 建立 .gitignore（避免把 node_modules / .env 推上去）
+@"
+# Node / Vite
+node_modules/
+dist/
+.vite/
+*.log
+
+# Env
+.env
+.env.*
+!.env.example
+
+# Editor
+.vscode/
+.DS_Store
+
+# Misc
+coverage/
+"@ | Out-File -Encoding UTF8 .gitignore
+
+# (可選) 提供環境變數範例檔
+@"
+VITE_SUPABASE_URL=YOUR_URL_HERE
+VITE_SUPABASE_ANON_KEY=YOUR_ANON_KEY_HERE
+"@ | Out-File -Encoding UTF8 .env.example
+
+# 4) 建立 README（可自訂內容）
+@"
+# e_commerce_cart
+
+Vite + React + TypeScript + Tailwind 的電商清單 + 購物車 Demo  
+含：分類/排序/搜尋(相似詞)/收藏/購物車(LocalStorage)、Supabase 登入(Email/Password)。
+
+## 開發
+\`\`\`bash
+npm install
+npm run dev
+\`\`\`
+
+## 環境變數
+請在專案根目錄建立 \`.env\`：
+\`\`\`
+VITE_SUPABASE_URL=...
+VITE_SUPABASE_ANON_KEY=...
+\`\`\`
+
+"@ | Out-File -Encoding UTF8 README.md
+
+# 5) 加入檔案並提交
 git add .
-git commit -m "每日單字"
+git commit -m "chore: init project & auth scaffolding"
 
-git remote set-url origin https://github.com/fromeastale/e_commerce_cart.git
+# 6) 設定預設分支為 main（若還沒）
+git branch -M main
 
-
-git push -u origin main
-
-
-# 加入所有重要變更
-git add android/ ios/ lib/ pubspec.yaml assets/icons/
-
-# 提交功能更新
-git commit -m "✨ 更新地圖 icon 顯示模組與頁面邏輯"
-
-# 推送到遠端
-git push origin main
-
-
-
-## ✅ 常用同步流程
-
-```bash
-# 1. 查看目前有哪些檔案被修改、刪除或新增
-git status
-
-# 2. 將所有變更加入 Git 暫存區（準備提交）
-git add .
-
-# 3. 提交變更，並加上描述（請用具體說明這次改了什麼）
-git commit -m "新增 InfoPage UI 並修正路由設定"
-
-# 4. 將本地的 commit 推送到 GitHub 的遠端 repo
-git push
-# 拉取遠端更新，避免推送時發生衝突
-git pull origin main --allow-unrelated-histories
-
-# 查看 commit 歷史（確認是否成功提交）
-git log --oneline
-
-# 查看目前的遠端 repo 設定（確認推送目標）
+# 7) 連到你的遠端 repo（若已設定過就跳過或先移除再加）
+git remote remove origin 2>$null
+git remote add origin https://github.com/fromeastale/e_commerce_cart.git
 git remote -v
+
+# 8) 推上 GitHub（第一次會要你登入；建議用 PAT）
+git push -u origin main
